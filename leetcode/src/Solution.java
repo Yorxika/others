@@ -70,4 +70,32 @@ public class Solution {
         return result;
     }
 
+    /**
+     * see [https://leetcode.cn/problems/find-majority-element-lcci/]
+     */
+    public int majorityElement(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int count = 0;
+        int result = -1;
+        for (int cur : nums) {
+            if (count == 0) {
+                result = cur;
+            }
+            if (cur == result) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+        count = 0;
+        for (int n : nums) {
+            if (n == result) {
+                count++;
+            }
+        }
+        return count * 2 > nums.length ? result : -1;
+    }
+
 }
