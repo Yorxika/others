@@ -200,6 +200,20 @@ public class Solution {
         return result;
     }
 
+    /**
+     * see [https://leetcode.cn/problems/add-without-plus-lcci/]
+     */
+    public int add(int a, int b) {
+        int m = a ^ b; // 异或 如果进位则为0
+        int n = (a & b) << 1; // 进位
+        while (n != 0) {
+            int temp = m ^ n;
+            n = (m & n) << 1;
+            m = temp;
+        }
+        return m;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
     }
