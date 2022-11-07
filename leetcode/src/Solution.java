@@ -141,7 +141,7 @@ public class Solution {
         }
 
         HashMap<String, String> nameMap = new HashMap<>();
-        for (String pair: synonyms) {
+        for (String pair : synonyms) {
             int mid = pair.indexOf(',');
             String name1 = pair.substring(1, mid);
             String name2 = pair.substring(mid + 1, pair.length() - 1);
@@ -182,6 +182,21 @@ public class Solution {
             index++;
         }
 
+        return result;
+    }
+
+    /**
+     * see [https://leetcode.cn/problems/missing-number-lcci/]
+     */
+    public int missingNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int n = nums.length;
+        int result = n * (n + 1) / 2;
+        for (int k : nums) {
+            result -= k;
+        }
         return result;
     }
 
