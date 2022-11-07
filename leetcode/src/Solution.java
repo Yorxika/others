@@ -1,4 +1,6 @@
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Solution {
@@ -124,6 +126,63 @@ public class Solution {
             }
         }
         return arr[k - 1];
+    }
+
+    /**
+     * see [https://leetcode.cn/problems/baby-names-lcci/]
+     */
+    public String[] trulyMostPopular(String[] names, String[] synonyms) {
+        HashMap<String, Integer> map = new HashMap<>();
+        for (String name : names) {
+            int left = name.indexOf('(');
+            int right = name.indexOf(')');
+            int frequency = Integer.parseInt(name.substring(left + 1, right));
+            map.put(name.substring(0, left), frequency);
+        }
+
+        HashMap<String, String> nameMap = new HashMap<>();
+        for (String pair: synonyms) {
+            int mid = pair.indexOf(',');
+            String name1 = pair.substring(1, mid);
+            String name2 = pair.substring(mid + 1, pair.length() - 1);
+
+            // 找到祖宗
+            while (nameMap.containsKey(name1)) {
+                name1 = nameMap.get(name1);
+            }
+
+            // 找到祖宗
+            while (nameMap.containsKey(name2)) {
+                name2 = nameMap.get(name2);
+            }
+
+            // 合并
+            if (!name2.equals(name1)) {
+                int frequency = map.getOrDefault(name1, 0) + map.getOrDefault(name2, 0);
+                if (name1.compareTo(name2) < 0) {
+                    nameMap.put(name2, name1); // 大往小搜索
+                    map.remove(name2);
+                    map.put(name1, frequency);
+                } else {
+                    nameMap.put(name1, name2);
+                    map.remove(name1);
+                    map.put(name2, frequency);
+                }
+            }
+        }
+
+        String[] result = new String[map.size()];
+        int index = 0;
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            StringBuilder sb = new StringBuilder(entry.getKey());
+            sb.append('(');
+            sb.append(entry.getValue());
+            sb.append(')');
+            result[index] = sb.toString();
+            index++;
+        }
+
+        return result;
     }
 
     public static void main(String[] args) {
