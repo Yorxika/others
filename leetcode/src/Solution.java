@@ -270,6 +270,56 @@ public class Solution {
         return new int[] {left, right};
     }
 
+    /**
+     思路:
+     设三指针:左、右、扫描,遵照有序数组的规律,找到左侧最大和右侧最小逆序对,
+     从左往右扫描得到最右逆序对,
+     从右往左扫描得到最左逆序对,
+     这两个逆序对的范围就是所求答案
+     */
+//    public int[] subSort(int[] array) {
+//
+//        //0.边界判断
+//        if(array==null) return null;
+//        if(array.length==0||array.length<2) return new int[]{-1,-1};
+//
+//        //1.定义需要的数据结构
+//        int max = array[0];//假设0号元素是左侧最大值
+//        int r = -1;//最右逆序对
+//
+//        //2.寻找逆序对
+//
+//        //2.1 寻找最右逆序对
+//        for(int i = 1;i < array.length;i++) {
+//            int val = array[i];
+//            if(val < max) {//当前元素小于左侧最大值,就说明是逆序对
+//                r = i;
+//            }else {//当前元素大于左侧最大值,就更新max;数组本身就是升序的
+//                max = val;
+//            }
+//        }
+//
+//        //2.2.数组本来就有序
+//        if(r==-1) return new int[]{-1,-1};
+//
+//        //2.3 寻找最左逆序对
+//        int min = array[array.length - 1];//最后一个值就是倒数第二个值右边最小值
+//        int l = - 1;//假设最后一个元素就是右侧最小值
+//        for(int i = array.length -1; i >= 0;i--) {
+//            int val = array[i];
+//            if(val > min) {
+//                //当前值大于右侧最小值,就说明是逆序对;因为升序数组当前值应该小于右侧最小值
+//                l = i;
+//            }else {
+//                min = val;
+//            }
+//
+//        }
+//
+//        //4.返回结果
+//        return new int[]{l,r};
+//    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
     }
