@@ -238,6 +238,38 @@ public class Solution {
         return res;
     }
 
+    /**
+     * see [https://leetcode.cn/problems/sub-sort-lcci/]
+     */
+    public int[] subSort(int[] array) {
+        if (array == null || array.length == 0) {
+            return new int[]{-1, -1};
+        }
+
+        int left = -1;
+        int right = -1;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0 ; i < array.length; i++) {
+            int cur = array[i];
+
+            // 正序遍历 确认右边的最小值都大于 中间最大
+            if (cur >= max) {
+                max = Math.max(cur, max);
+            } else {
+                right = i;
+            }
+
+            // 倒叙遍历 确认左边的最大值都小于 中间最小
+            if (array[array.length - 1 - i] > min) {
+                left = array.length - 1 - i;
+            } else {
+                min = Math.min(array[array.length - 1 - i], min);
+            }
+        }
+        return new int[] {left, right};
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
     }
