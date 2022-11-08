@@ -214,6 +214,30 @@ public class Solution {
         return m;
     }
 
+    /**
+     * see [https://leetcode.cn/problems/count-the-number-of-consistent-strings/]
+     */
+    public int countConsistentStrings(String allowed, String[] words) {
+        boolean[] map = new boolean[26];
+        for (int i = 0; i < allowed.length(); i++) {
+            map[allowed.charAt(i) - 'a'] = true;
+        }
+        int res = 0;
+        for (String s : words) {
+            boolean contains = true;
+            for (int i = 0; i < s.length(); i++) {
+                if (!map[s.charAt(i) - 'a']) {
+                    contains = false;
+                    break;
+                }
+            }
+            if (contains) {
+                res++;
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
     }
