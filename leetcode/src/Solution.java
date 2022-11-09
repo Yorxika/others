@@ -250,7 +250,7 @@ public class Solution {
         int right = -1;
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
-        for (int i = 0 ; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) {
             int cur = array[i];
 
             // 正序遍历 确认右边的最小值都大于 中间最大
@@ -267,7 +267,7 @@ public class Solution {
                 min = Math.min(array[array.length - 1 - i], min);
             }
         }
-        return new int[] {left, right};
+        return new int[]{left, right};
     }
 
     /**
@@ -319,6 +319,39 @@ public class Solution {
 //        //4.返回结果
 //        return new int[]{l,r};
 //    }
+
+    /**
+     * see [https://leetcode.cn/problems/master-mind-lcci/]
+     */
+    public int[] masterMind(String solution, String guess) {
+        int[] map1 = new int[4];
+        int[] map2 = new int[26];
+        for (int i = 0; i < 4; i++) {
+            char ch = solution.charAt(i);
+            map1[i] = ch;
+            map2[ch - 'A'] +=1 ;
+        }
+
+        int exactly = 0;
+        int part = 0;
+        for (int i = 0; i < 4; i++) {
+            char ch = guess.charAt(i);
+            if (ch == map1[i]) {
+                exactly++;
+                map2[ch - 'A'] -=1;
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            char ch = guess.charAt(i);
+            if (map2[ch - 'A'] > 0 && ch != map1[i]) {
+                part++;
+                map2[ch - 'A'] -=1;
+            }
+        }
+
+        return new int[]{exactly, part};
+    }
 
     public static void main(String[] args) {
         Solution s = new Solution();
