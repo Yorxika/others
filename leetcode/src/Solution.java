@@ -329,7 +329,7 @@ public class Solution {
         for (int i = 0; i < 4; i++) {
             char ch = solution.charAt(i);
             map1[i] = ch;
-            map2[ch - 'A'] +=1 ;
+            map2[ch - 'A'] += 1;
         }
 
         int exactly = 0;
@@ -338,7 +338,7 @@ public class Solution {
             char ch = guess.charAt(i);
             if (ch == map1[i]) {
                 exactly++;
-                map2[ch - 'A'] -=1;
+                map2[ch - 'A'] -= 1;
             }
         }
 
@@ -346,11 +346,30 @@ public class Solution {
             char ch = guess.charAt(i);
             if (map2[ch - 'A'] > 0 && ch != map1[i]) {
                 part++;
-                map2[ch - 'A'] -=1;
+                map2[ch - 'A'] -= 1;
             }
         }
 
         return new int[]{exactly, part};
+    }
+
+    /**
+     * see [https://leetcode.cn/problems/contiguous-sequence-lcci/]
+     */
+    public int maxSubArray(int[] nums) {
+        int max = nums[0];
+        int sum = 0;
+        for (int n : nums) {
+            sum += n;
+            if (sum < n) {
+                sum = n;
+            }
+
+            if (sum > max) {
+                max = sum;
+            }
+        }
+        return max;
     }
 
     public static void main(String[] args) {
