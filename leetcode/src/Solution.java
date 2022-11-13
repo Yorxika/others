@@ -1,7 +1,4 @@
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Solution {
 
@@ -370,6 +367,30 @@ public class Solution {
             }
         }
         return max;
+    }
+
+    /**
+     * see [https://leetcode.cn/problems/hanota-lcci/]
+     */
+    public void hanota(List<Integer> A, List<Integer> B, List<Integer> C) {
+        moveHanota(A.size(), A, B, C);
+    }
+
+    /**
+     * 将n 个圆盘经B 从A 移动到C
+     */
+    private void moveHanota(int n, List<Integer> A, List<Integer> B, List<Integer> C) {
+        if (n == 1) {
+            C.add(0, A.remove(0));
+            return;
+        }
+
+        // 先把最上面n-1个移动到B
+        moveHanota(n - 1, A, C, B);
+        // 移动最后一个
+        C.add(0, A.remove(0));
+        // 在移动B上面的n-1个到c
+        moveHanota(n - 1, B, A, C);
     }
 
     public static void main(String[] args) {
