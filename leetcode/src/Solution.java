@@ -421,6 +421,31 @@ public class Solution {
         return (int)min;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/living-people-lcci/">面试题 16.10. 生存人数</a>]
+     */
+    public int maxAliveYear(int[] birth, int[] death) {
+        final int base = 1900;
+        int[] arr = new int[110];
+        for (int i = 0; i < birth.length; i++) {
+            int start = birth[i] - base;
+            int end = death[i] - base;
+            arr[start] += 1; // 存活人数+1
+            arr[end + 1] -= 1; // 死亡人数-1
+        }
+        int year = 0;
+        int max = 0;
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            if (sum > max) {
+                max = sum;
+                year = i;
+            }
+        }
+        return year + base;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
