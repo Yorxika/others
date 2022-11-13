@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Solution {
@@ -393,8 +394,37 @@ public class Solution {
         moveHanota(n - 1, B, A, C);
     }
 
+    /**
+     * see [https://leetcode.cn/problems/smallest-difference-lcci/]
+     */
+    public int smallestDifference(int[] a, int[] b) {
+        // 先排序
+        Arrays.sort(a);
+        Arrays.sort(b);
+        long min = Math.abs((long)a[0] - (long)b[0]);
+        int i = 0;
+        int j = 0;
+        while (i < a.length && j < b.length) {
+            long ai = (long) a[i];
+            long bj = (long) b[j];
+            long x = Math.abs(bj - ai);
+            if (x == 0) {
+                return 0;
+            }
+            min = Math.min(min, x);
+            long diff = ai - bj;
+            if (diff > 0) {
+                j++;
+            } else {
+                i++;
+            }
+        }
+        return (int)min;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
+        s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
     }
 
 }
