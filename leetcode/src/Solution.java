@@ -400,7 +400,7 @@ public class Solution {
         // 先排序
         Arrays.sort(a);
         Arrays.sort(b);
-        long min = Math.abs((long)a[0] - (long)b[0]);
+        long min = Math.abs((long) a[0] - (long) b[0]);
         int i = 0;
         int j = 0;
         while (i < a.length && j < b.length) {
@@ -418,7 +418,7 @@ public class Solution {
                 i++;
             }
         }
-        return (int)min;
+        return (int) min;
     }
 
     /**
@@ -452,7 +452,40 @@ public class Solution {
     public int maximum(int a, int b) {
         long al = a;
         long bl = b;
-        return (int)((Math.abs(al - bl) + al + bl) / 2);
+        return (int) ((Math.abs(al - bl) + al + bl) / 2);
+    }
+
+    /**
+     * see [<a href="https://leetcode.cn/problems/sum-swap-lcci/">面试题 16.21. 交换和</a>]
+     */
+    public int[] findSwapValues(int[] array1, int[] array2) {
+        int sum1 = 0;
+        int sum2 = 0;
+        for (int i : array1) {
+            sum1 += i;
+        }
+
+        for (int i : array2) {
+            sum2 += i;
+        }
+
+        if ((sum1 + sum2) % 2 != 0) {
+            return new int[0];
+        }
+
+        int result = (sum1 + sum2) / 2;
+        Set<Integer> set = new HashSet<>();
+
+        for (int i : array1) {
+            set.add(result - sum1 + i);
+        }
+
+        for (int j : array2) {
+            if (set.contains(j)) {
+                return new int[]{result - sum2 + j, j};
+            }
+        }
+        return new int[0];
     }
 
     public static void main(String[] args) {
