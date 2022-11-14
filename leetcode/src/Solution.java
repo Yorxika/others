@@ -446,6 +446,15 @@ public class Solution {
         return year + base;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/maximum-lcci/">面试题 16.07. 最大数值</a>]
+     */
+    public int maximum(int a, int b) {
+        long al = a;
+        long bl = b;
+        return (int)((Math.abs(al - bl) + al + bl) / 2);
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
