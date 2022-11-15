@@ -513,6 +513,18 @@ public class Solution {
         return result;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/factorial-zeros-lcci/">面试题 16.05. 阶乘尾数</a>]
+     */
+    public int trailingZeroes(int n) {
+        int count = 0;
+        while (n >= 5) {
+            n /= 5;
+            count += n;
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
