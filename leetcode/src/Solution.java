@@ -488,6 +488,31 @@ public class Solution {
         return new int[0];
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/maximum-units-on-a-truck/comments/">1710. 卡车上的最大单元数</a>]
+     */
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
+        int[] map = new int[1001];
+        for (int[] arr : boxTypes) {
+            map[arr[1]] += arr[0];
+        }
+        int result = 0;
+        for (int i = map.length - 1; i > 0; i--) {
+            // 没有能装i个的箱子
+            if (map[i] == 0) {
+                continue;
+            }
+            if (truckSize > map[i]) {
+                truckSize -= map[i];
+                result += (map[i] * i);
+            } else {
+                result += (truckSize * i);
+                return result;
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
