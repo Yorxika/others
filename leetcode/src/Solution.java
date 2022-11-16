@@ -525,6 +525,19 @@ public class Solution {
         return count;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/global-and-local-inversions/">775. 全局倒置与局部倒置</a>]
+     */
+    public boolean isIdealPermutation(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            if (Math.abs(nums[i] - i) > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
