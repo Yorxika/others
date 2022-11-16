@@ -538,6 +538,33 @@ public class Solution {
         return true;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/t9-lcci/">面试题 16.20. T9键盘</a>]
+     */
+    public List<String> getValidT9Words(String num, String[] words) {
+        int[] map = new int[]{2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9};
+        int n = num.length();
+        int[] nums = new int[n];
+        // 为减少计算，把num字符串转换成int数组
+        for (int i = 0; i < n; i++) {
+            nums[i] = num.charAt(i) - '0';
+        }
+        List<String> res = new ArrayList<>();
+        for (String word : words) {
+            boolean flag = true;
+            for (int i = 0; i < nums.length; i++) {
+                if (map[word.charAt(i) - 'a'] != nums[i]) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                res.add(word);
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
