@@ -565,9 +565,58 @@ public class Solution {
         return res;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/number-of-matching-subsequences/">792. 匹配子序列的单词数</a>]
+     */
+    public int numMatchingSubseq(String s, String[] words) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            int key = ch - 'a';
+            List<Integer> list = map.getOrDefault(key, new ArrayList<>());
+            list.add(i);
+            map.put(key, list);
+        }
+
+        int count = 0;
+        for (String w : words) {
+            boolean flag = true;
+            int prePosition = -1;
+            for (int j = 0; j < w.length(); j++) {
+                int key = w.charAt(j) - 'a';
+                if (!map.containsKey(key)) {
+                    flag = false;
+                    break;
+                }
+                List<Integer> list = map.get(key);
+                // 找到第一个index比prePosition大的
+                int l = 0;
+                int r = list.size() - 1;
+                while (l < r) {
+                    int mid = (l + r) >> 1;
+                    if (list.get(mid) > prePosition) {
+                        r = mid;
+                    } else {
+                        l = mid + 1;
+                    }
+                }
+                if (r < 0 || list.get(r) <= prePosition) {
+                    flag = false;
+                    break;
+                }
+                prePosition = list.get(r);
+            }
+
+            if (flag) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
-        s.smallestDifference(new int[]{Integer.MIN_VALUE, 1}, new int[]{Integer.MAX_VALUE, 0});
+        s.numMatchingSubseq("dsahjpjauf", new String[]{"ahjpjau", "ja", "ahbwzgqnuk", "tnmlanowax"});
     }
 
 }
