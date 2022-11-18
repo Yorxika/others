@@ -614,6 +614,34 @@ public class Solution {
         return count;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/sum-of-subsequence-widths/">891. 子序列宽度之和</a>]
+     */
+    public int sumSubseqWidths(int[] nums) {
+        int mod = (int) (1e9 + 7);
+        // 首先打表计算2^n值
+        int n = nums.length + 1;
+        long[] value = new long[n];
+        value[0] = 1; // 2^0 = 1
+        for (int i = 1; i < n; i++) {
+            value[i] = value[i - 1] * 2 % mod;
+        }
+
+        long ans = 0;
+        // 排序后，对于任意一个数i，在其后面的k-i-1个数中，共有2^(k-i-1)个子列
+        // 在其之前 共有2^i 个子列
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            // nums[i]在2^i 个子列中充当了最大值
+            ans += (value[i] * nums[i]) % mod;
+            ans %= mod;
+            // 在2^n - i - 1 个子列中充当了最小值
+            ans -= (value[nums.length - i - 1] * nums[i]) % mod;
+            ans %= mod;
+        }
+        return (int) ans;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.numMatchingSubseq("dsahjpjauf", new String[]{"ahjpjau", "ja", "ahbwzgqnuk", "tnmlanowax"});
