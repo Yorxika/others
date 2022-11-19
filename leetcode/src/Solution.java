@@ -642,9 +642,23 @@ public class Solution {
         return (int) ans;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/find-the-highest-altitude/">1732. 找到最高海拔</a>]
+     */
+    public int largestAltitude(int[] gain) {
+        int max = 0;
+        int pre = 0;
+        for (int i = 0; i < gain.length; i++) {
+            int cur = pre + gain[i];
+            max = Math.max(cur, max);
+            pre = cur;
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
-        s.numMatchingSubseq("dsahjpjauf", new String[]{"ahjpjau", "ja", "ahbwzgqnuk", "tnmlanowax"});
+        s.largestAltitude(new int[] {-5,1,5,0,-7});
     }
 
 }
