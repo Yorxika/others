@@ -656,9 +656,80 @@ public class Solution {
         return max;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/pattern-matching-lcci/">面试题 16.18. 模式匹配</a>]
+     */
+    public boolean patternMatching(String pattern, String value) {
+        int a = 0;
+        int b = 0;
+        int indexA = -1, indexB = -1;
+        boolean flagA = false, flagB = false;
+        boolean[] map = new boolean[pattern.length()];
+        // 统计a b数目
+        for (int i = 0; i < pattern.length(); i++) {
+            if (pattern.charAt(i) - 'a' == 0) {
+                a++;
+                map[i] = true;
+                if (!flagA) {
+                    indexA = i;
+                    flagA = true;
+                }
+            } else {
+                b++;
+                if (!flagB) {
+                    flagB = true;
+                    indexB = i;
+                }
+            }
+        }
+        // 空串
+        if (value == null || value.isEmpty()) {
+            return a <= 0 || b <= 0;
+        }
+        // 只有1个模式时，直接匹配全部
+        if (a == 1 || b == 1) {
+            return true;
+        }
+        // 暴力匹配
+        for (int aLength = 0; aLength < value.length(); aLength++) {
+            for (int bLength = 0; bLength < value.length(); bLength++) {
+                // 求解ax + by = n
+                if (aLength * a + bLength * b != value.length()) {
+                    continue;
+                }
+                String pa = "";
+                if (indexA >= 0) {
+                    // 构造字符串a b的数量 * y的长度
+                    pa = value.substring(bLength * indexA, bLength * indexA + aLength);
+                }
+                String pb = "";
+                if (indexB >= 0) {
+                    // 构造字符串b
+                    pb = value.substring(aLength * indexB, aLength * indexB + bLength);
+                }
+                // a b 所代表的字符串不能相同
+                if (pa.equals(pb)) {
+                    continue;
+                }
+                StringBuilder sb = new StringBuilder();
+                for (boolean v : map) {
+                    if (v) {
+                        sb.append(pa);
+                    } else {
+                        sb.append(pb);
+                    }
+                }
+                if (value.equals(sb.toString())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
-        s.largestAltitude(new int[] {-5,1,5,0,-7});
+        s.largestAltitude(new int[]{-5, 1, 5, 0, -7});
     }
 
 }
