@@ -727,6 +727,24 @@ public class Solution {
         return false;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/champagne-tower/">799. 香槟塔</a>]
+     */
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        double[][] ca = new double[102][102];
+        ca[0][0] = poured;
+        for (int l = 0; l <= query_row; l++) {
+            for (int r = 0; r <= l; r++) {
+                double d = (ca[l][r] - 1.0) / 2;
+                if (d > 0) {
+                    ca[l + 1][r] += d;
+                    ca[l + 1][r + 1] += d;
+                }
+            }
+        }
+        return Math.min(1.0, ca[query_row][query_glass]);
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.largestAltitude(new int[]{-5, 1, 5, 0, -7});
