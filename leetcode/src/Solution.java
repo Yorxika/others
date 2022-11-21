@@ -745,6 +745,41 @@ public class Solution {
         return Math.min(1.0, ca[query_row][query_glass]);
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/soup-servings/">808. 分汤</a>]
+     */
+    public double soupServings(int n) {
+        // 抄作业
+        if (n >= 4451) {
+            return 1;
+        }
+        double[][] dp = new double[n + 1][n + 1];
+        return soupServings(n, n, dp);
+    }
+
+    private double soupServings(int a, int b, double[][] dp) {
+        if (a <= 0) {
+            // a b 同时变为空的概率 / 2
+            if (b <= 0) {
+                return 0.5;
+            }
+            // a 为空
+            return 1;
+        }
+        if (b <= 0) {
+            return 0;
+        }
+        if (dp[a][b] != 0) {
+            return dp[a][b];
+        }
+        //四叉树分叉
+        dp[a][b] += 0.25 * soupServings(a - 100, b - 0, dp);
+        dp[a][b] += 0.25 * soupServings(a - 75, b - 25, dp);
+        dp[a][b] += 0.25 * soupServings(a - 50, b - 50, dp);
+        dp[a][b] += 0.25 * soupServings(a - 25, b - 75, dp);
+        return dp[a][b];
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.largestAltitude(new int[]{-5, 1, 5, 0, -7});
