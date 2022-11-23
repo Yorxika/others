@@ -780,6 +780,42 @@ public class Solution {
         return dp[a][b];
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/nth-magical-number/">878. 第 N 个神奇数字</a>]
+     */
+    public int nthMagicalNumber(int N, int A, int B) {
+        // 最小公倍数 C
+        // 目标N 满足 x / A + X / B - x / C >= N
+        // 其中x 为任意一正整数
+        int C = A * B / nthMagicalNumberGcd(A, B);
+        int n = C / A + C / B - 1;
+        long div = N / n;
+        long mod = N % n;
+        long x = xthMagicalNumber(A, B, mod);
+        int M = (int) 1e9 + 7;
+        return (int) ((div * C + x) % M);
+    }
+
+    /**
+     * 求最大公约数
+     */
+    private int nthMagicalNumberGcd(int a, int b) {
+        return b == 0 ? a : nthMagicalNumberGcd(b, a % b);
+    }
+
+    private long xthMagicalNumber(long a, long b, long x) {
+        if (x == 0) {
+            return 0;
+        }
+        double sum = a + b;
+        long x0 = (long) (b * x / sum);
+        long x1 = (long) (b * (x + 1) / sum);
+        if (x1 == x0) {
+            return xthMagicalNumber(b, a, x);
+        }
+        return x1 * a;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.largestAltitude(new int[]{-5, 1, 5, 0, -7});
