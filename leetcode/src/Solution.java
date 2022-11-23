@@ -816,6 +816,38 @@ public class Solution {
         return x1 * a;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/maximum-number-of-balls-in-a-box/">1742. 盒子中小球的最大数量</a>]
+     */
+    public int countBalls(int lowLimit, int highLimit) {
+        int[] map = new int[46];
+        int firstIndex = countBallsN(lowLimit);
+        map[firstIndex] = 1; // 初始化第一个数字lowLimit所在编号盒子的小球数量
+        for (int i = lowLimit; i < highLimit; i++) {
+            for (int pre = i; pre % 10 == 9; pre /= 10) {
+                // 根据前一个数的末位是否为9，来重新定位下一个数的位置
+                firstIndex -= 9; // 前移9位
+            }
+            // 下一个数字所在盒子
+            firstIndex++;
+            map[firstIndex] += 1;
+        }
+        int max = 0;
+        for (int k : map) {
+            max = Math.max(k, max);
+        }
+        return max;
+    }
+
+    private int countBallsN(int i) {
+        int k = 0;
+        while (i > 0) {
+            k += i % 10;
+            i /= 10;
+        }
+        return k;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.largestAltitude(new int[]{-5, 1, 5, 0, -7});
