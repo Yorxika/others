@@ -848,9 +848,30 @@ public class Solution {
         return k;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/number-of-subarrays-with-bounded-maximum/">795. 区间子数组个数</a>]
+     */
+    public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+        int res = 0;
+        int l = -1; // 左指针
+        int r = -1; // 右指针
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] >= left && nums[i] <= right) {
+                r = i;
+            } else if (nums[i] > right) {
+                l = i;
+                r = -1;
+            }
+            if (r != -1) {
+                res += r - l;
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
-        s.largestAltitude(new int[]{-5, 1, 5, 0, -7});
+        s.numSubarrayBoundedMax(new int[]{2, 1, 4, 3}, 2, 3);
     }
 
 }
