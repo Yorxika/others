@@ -869,6 +869,51 @@ public class Solution {
         return res;
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/expressive-words/">809. 情感丰富的文字</a>]
+     */
+    public int expressiveWords(String s, String[] words) {
+        int ans = 0;
+        for (String word : words) {
+            if (canExpand(word, s)) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * a 能扩展到B吗
+     */
+    private boolean canExpand(String a, String b) {
+        int i = 0;
+        int j = 0;
+        while (i < a.length() && j < b.length()) {
+            if (a.charAt(i) != b.charAt(j)) {
+                return false;
+            }
+            int charA = a.charAt(i);
+            int ca = 0;
+            while (i < a.length() && a.charAt(i) == charA) {
+                ca++;
+                i++;
+            }
+            int charB = b.charAt(j);
+            int cb = 0;
+            while (j < b.length() && b.charAt(j) == charB) {
+                cb++;
+                j++;
+            }
+            if (ca == cb) {
+                continue;
+            }
+            if (ca > cb || cb < 3) {
+                return false;
+            }
+        }
+        return i == a.length() && j == b.length();
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.numSubarrayBoundedMax(new int[]{2, 1, 4, 3}, 2, 3);
