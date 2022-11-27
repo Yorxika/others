@@ -914,9 +914,23 @@ public class Solution {
         return i == a.length() && j == b.length();
     }
 
+    /**
+     * see [<a href="https://leetcode.cn/problems/check-if-array-is-sorted-and-rotated/">1752. 检查数组是否经排序和轮转得到</a>]
+     */
+    public boolean check(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            // 校验是否递减
+            if (nums[i] > nums[(i + 1) % nums.length]) {
+                count++;
+            }
+        }
+        return count <= 1;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
-        s.numSubarrayBoundedMax(new int[]{2, 1, 4, 3}, 2, 3);
+        s.check(new int[]{3, 6, 10, 1, 8, 9, 9, 8, 9});
     }
 
 }
