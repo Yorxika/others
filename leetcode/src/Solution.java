@@ -928,6 +928,29 @@ public class Solution {
         return count <= 1;
     }
 
+    /**
+     * @see <a href="https://leetcode.cn/problems/largest-sum-of-averages/">813. 最大平均值和的分组</a>
+     */
+    public double largestSumOfAverages(int[] nums, int k) {
+        // dp[i][k]表示前i个数构成k个子数组时的最大平均值, 那么对于所有 0 <= j <= i-1
+        // dp[i][k] = Math.max(dp[i][k], dp[j][k-1] + (A[j+1] + ... + A[i+1]) / (i-j))
+        double[][] dp = new double[nums.length + 1][k + 1];
+        // 前缀和
+        double[] sum = new double[nums.length + 1];
+        for (int i = 1; i <= nums.length; i++) {
+            sum[i] = sum[i - 1] + nums[i - 1];
+            dp[i][1] = sum[i] / i;
+        }
+        for (int i = 1; i <= nums.length; i++) {
+            for (int j = 2; j <= k; j++) {
+                for (int l = 0; l < i; l++) {
+                    dp[i][j] = Math.max(dp[i][j], dp[l][j - 1] + (sum[i] - sum[l]) / (i - l));
+                }
+            }
+        }
+        return dp[nums.length][k];
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.check(new int[]{3, 6, 10, 1, 8, 9, 9, 8, 9});
