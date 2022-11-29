@@ -951,9 +951,27 @@ public class Solution {
         return dp[nums.length][k];
     }
 
+    /**
+     * @see <a href="https://leetcode.cn/problems/minimum-changes-to-make-alternating-binary-string/">1758. 生成交替二进制字符串的最少操作数</a>
+     */
+    public int minOperations(String s) {
+        if (s.length() == 1) {
+            return 0;
+        }
+        char[] arr = s.toCharArray();
+        int c0 = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // 第0位为0
+            if (arr[i] % 2 == i % 2) {
+                c0++;
+            }
+        }
+        return Math.min(c0, s.length() - c0);
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
-        s.check(new int[]{3, 6, 10, 1, 8, 9, 9, 8, 9});
+        s.minOperations("0100");
     }
 
 }
