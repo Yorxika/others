@@ -969,6 +969,31 @@ public class Solution {
         return Math.min(c0, s.length() - c0);
     }
 
+    /**
+     * @see <a href="https://leetcode.cn/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate/">1779. 找到最近的有相同 X 或 Y 坐标的点</a>
+     */
+    public int nearestValidPoint(int x, int y, int[][] points) {
+        int min = Integer.MAX_VALUE;
+        int res = -1;
+        if (points.length == 0) {
+            return res;
+        }
+        int i = 0;
+        for (int[] point : points) {
+            int x1 = point[0];
+            int y1 = point[1];
+            if (x == x1 || y == y1) {
+                int temp = Math.abs(x - x1) + Math.abs(y - y1);
+                if (min > temp) {
+                    min = Math.min(min, temp);
+                    res = i;
+                }
+            }
+            i++;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.minOperations("0100");
