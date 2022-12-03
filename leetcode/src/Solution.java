@@ -954,7 +954,7 @@ public class Solution {
     /**
      * @see <a href="https://leetcode.cn/problems/minimum-changes-to-make-alternating-binary-string/">1758. 生成交替二进制字符串的最少操作数</a>
      */
-    public int minOperations(String s) {
+    public int minOperations1758(String s) {
         if (s.length() == 1) {
             return 0;
         }
@@ -992,6 +992,38 @@ public class Solution {
             i++;
         }
         return res;
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/minimum-number-of-operations-to-move-all-balls-to-each-box/">1769. 移动所有球到每个盒子所需的最小操作数</a>
+     */
+    public int[] minOperations(String boxes) {
+        // 第i个盒子以及其左边有多少个球
+        int left = boxes.charAt(0) - '0';
+        // 第i个盒子以及其右边有多少个球
+        int right = 0;
+        // 把所有球移动到第i个盒子需要第操作步骤
+        int opertaion = 0;
+        int len = boxes.length();
+        for (int i = 1; i < len; i++) {
+            if (boxes.charAt(i) == '1') {
+                right++;
+                opertaion += i;
+            }
+        }
+        int[] result = new int[boxes.length()];
+        // 初始化0
+        result[0] = opertaion;
+        for (int i = 1; i < len; i++) {
+            result[i] = opertaion + left - right;
+            opertaion += left - right;
+            // 更新当前位置的左右球数量
+            if (boxes.charAt(i) == '1') {
+                left++;
+                right--;
+            }
+        }
+        return result;
     }
 
     public static void main(String[] args) {
