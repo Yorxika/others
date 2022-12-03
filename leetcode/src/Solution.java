@@ -1026,6 +1026,26 @@ public class Solution {
         return result;
     }
 
+    /**
+     * @see <a href="https://leetcode.cn/problems/second-largest-digit-in-a-string/">1796. 字符串中第二大的数字</a>
+     */
+    public int secondHighest(String s) {
+        int[] arr = new int[]{-1, -1};
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                int val = ch - '0';
+                if (val > arr[1]) {
+                    arr[0] = arr[1];
+                    arr[1] = val;
+                } else if (val != arr[1] && val > arr[0]) {
+                    arr[0] = val;
+                }
+            }
+        }
+        return arr[0];
+    }
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.minOperations("0100");
