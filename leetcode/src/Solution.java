@@ -1046,6 +1046,222 @@ public class Solution {
         return arr[0];
     }
 
+    /**
+     * @see <a href="https://leetcode.cn/problems/closest-dessert-cost/">1774. 最接近目标价格的甜点成本</a>
+     */
+    public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
+//        HashSet<Integer> set = new HashSet<>(20005);
+//        for (int c : baseCosts) {
+//            set.add(c);
+//        }
+//        for (int c : toppingCosts) {
+//            for (int v : set.toArray(new Integer[0])) {
+//                set.add(v + c);
+//                set.add(v + c * 2);
+//            }
+//        }
+//        int ans = -20000;
+//        for (int v : set) {
+//            if (Math.abs(v - target) < Math.abs(ans - target)) {
+//                ans = v;
+//            }
+//        }
+//        return ans;
+        boolean[] dp = new boolean[target + 10];
+        int ans = Integer.MAX_VALUE;
+        for (int cost : baseCosts) {
+            if (cost > target) {
+                ans = Math.min(ans, cost);
+            } else {
+                // 只选一种基料，满足
+                dp[cost] = true;
+            }
+        }
+        // 辅料
+        for (int top : toppingCosts) {
+            // 这里计算两次，是对应可以添加1/2种辅料的情况
+            // 第一次循环能计算出添加了1次辅料dp[j - top]的情况，第二次可以往后推
+            for (int i = 0; i < 2; i++) {
+                for (int j = target; j >= 0; j--) {
+                    // 超过
+                    if (dp[j] && j + top > target) {
+                        ans = Math.min(ans, j + top);
+                    }
+                    if (j > top) {
+                        // 如果j-top能拼凑出来，那么j也能拼凑出来，视为添加了一种辅料
+                        dp[j] |= dp[j - top];
+                    }
+                }
+            }
+        }
+
+        // ans 是大于target的最小值，那么ans-target就是target右侧的最小距离
+        // 只需要遍历[target - ans + target, target]这个区间的值就好了
+        for (int i = target; i >= target - ans + target && i >= 0; i--) {
+            if (dp[i]) {
+                return i;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/number-of-different-integers-in-a-string/">1805. 字符串中不同整数的数目</a>
+     */
+    public int numDifferentIntegers(String word) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                int j = i;
+                while (j < word.length() && word.charAt(j) >= '0' && word.charAt(j) <= '9') {
+                    j++;
+                }
+                // 去掉前导0
+                while (i < word.length() && word.charAt(i) == '0') {
+                    i++;
+                }
+                set.add(word.substring(i, j));
+                i = j;
+            }
+        }
+        return set.size();
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/equal-sum-arrays-with-minimum-number-of-operations/">1775. 通过最少操作次数使数组的和相等</a>
+     */
+    public int minOperations(int[] nums1, int[] nums2) {
+        // 无相等可能
+        if (nums1.length > 6 * nums2.length || nums2.length > 6 * nums1.length) {
+            return -1;
+        }
+        int sum1 = 0;
+        int sum2 = 0;
+        for (int i = 0; i < nums1.length; i++) {
+            sum1 += nums1[i];
+        }
+        for (int i = 0; i < nums2.length; i++) {
+            sum2 += nums2[i];
+        }
+        if (sum1 < sum2) {
+            return minOperations(nums2, nums1);
+        }
+        // 有map[i]个数，可以使得diff 减少i
+        int[] map = new int[6];
+        for (int i = 0; i < nums1.length; i++) {
+            // 变小跨度
+            map[nums1[i] - 1]++;
+        }
+        for (int i = 0; i < nums2.length; i++) {
+            // 变大跨度
+            map[6 - nums2[i]]++;
+        }
+        int diff = sum1 - sum2;
+        int time = 0;
+        // 从跨度值最大的开始计算，可以是nuns[1]的值变1，也可以是nums[2]的值变6
+        for (int i = 5; ; i--) {
+            // 满足相等条件，取下界的次数
+            if (diff - i * map[i] <= 0) {
+                return time + (diff + i - 1) / i;
+            } else {
+                // diff 大于跨度的变化值，减diff
+                time += map[i];
+                diff = diff - i * map[i];
+            }
+        }
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/determine-color-of-a-chessboard-square/">1812. 判断国际象棋棋盘中一个格子的颜色</a>
+     */
+    public boolean squareIsWhite(String coordinates) {
+        return coordinates.charAt(0) % 2 + coordinates.charAt(1) % 2 == 1;
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/check-if-number-is-a-sum-of-powers-of-three/">1780. 判断一个数字是否可以表示成三的幂的和</a>
+     */
+    public boolean checkPowersOfThree(int n) {
+        while (n > 0) {
+            if (n % 3 == 2) {
+                return false;
+            }
+            n /= 3;
+        }
+        return true;
+//        int[] arr = new int[] {1,3,9,27,81,243,729,2187,6561,19683,59049,177147,531441,1594323,4782969,14348907,43046721};
+//        for (int i = arr.length - 1; i >= 0; i--) {
+//            if (n >= arr[i]) {
+//                n -= arr[i];
+//            }
+//        }
+//        return n == 0;
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/minimum-operations-to-make-the-array-increasing/">1827. 最少操作使数组递增</a>
+     */
+    public int minOperations(int[] nums) {
+        if (nums.length == 1) {
+            return 0;
+        }
+        int ans = 0;
+        for (int i = 1; i < nums.length; i++) {
+            int pre = nums[i - 1];
+            int cur = nums[i];
+            if (cur <= pre) {
+                ans += pre - cur + 1;
+                nums[i] = pre + 1;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/sum-of-beauty-of-all-substrings/">1781. 所有子字符串美丽值之和</a>
+     */
+    public int beautySum(String s) {
+        int len = s.length();
+        int sum = 0;
+        for (int i = 0; i < len; i++) {
+            int[] map = new int[26];
+            for (int j = i; j < len; j++) {
+                map[s.charAt(j) - 'a']++;
+                int max = 0;
+                int min = Integer.MAX_VALUE;
+                for (int k = 0; k < map.length; k++) {
+                    if (map[k] == 0) {
+                        continue;
+                    }
+                    max = Math.max(max, map[k]);
+                    min = Math.min(min, map[k]);
+                }
+                sum += (max - min);
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/check-if-the-sentence-is-pangram/">1832. 判断句子是否为全字母句</a>
+     */
+    public boolean checkIfPangram(String sentence) {
+        char[] arr = sentence.toCharArray();
+        int[] map = new int[26];
+        for (char ch : arr) {
+            map[ch - 'a']++;
+        }
+        for (int v : map) {
+            if (v == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //todo 1687， 1691
+
     public static void main(String[] args) {
         Solution s = new Solution();
         s.minOperations("0100");
