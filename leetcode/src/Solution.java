@@ -1260,7 +1260,46 @@ public class Solution {
         return true;
     }
 
-    //todo 1687， 1691
+    /**
+     * @see <a href="https://leetcode.cn/problems/sum-of-digits-of-string-after-convert/">1945. 字符串转化后的各位数字之和</a>
+     */
+    public int getLucky(String s, int k) {
+        int n = s.length(), res = 0;
+        //s转化数字，同步执行一次按位求和，k-1
+        for (int i = 0; i < n; ++i) {
+            int num = s.charAt(i) - 'a' + 1;
+            while (num > 0) {
+                res += num % 10;
+                num /= 10;
+            }
+        }
+        --k;
+        //循环k-1次按位求和
+        while (k > 0) {
+            int tem = res;
+            res = 0;
+            while (tem > 0) {
+                res += tem % 10;
+                tem /= 10;
+            }
+            --k;
+        }
+        return res;
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/minimum-elements-to-add-to-form-a-given-sum/">1785. 构成特定和需要添加的最少元素</a>
+     */
+    public int minElements(int[] nums, int limit, int goal) {
+        long sum = 0;
+        for (int n : nums) {
+            sum += n;
+        }
+        long abs = Math.abs(sum - goal);
+        return (int) Math.ceil((double) abs / limit);
+    }
+
+    //todo 1687， 1691, 1697
 
     public static void main(String[] args) {
         Solution s = new Solution();
