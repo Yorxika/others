@@ -1299,7 +1299,158 @@ public class Solution {
         return (int) Math.ceil((double) abs / limit);
     }
 
-    //todo 1687， 1691, 1697
+    /**
+     * @see <a href="https://leetcode.cn/problems/form-array-by-concatenating-subarrays-of-another-array/">1764. 通过连接另一个数组的子数组得到一个数组</a>
+     */
+    public boolean canChoose(int[][] groups, int[] nums) {
+        int p1 = 0;
+        int p2 = 0;
+        int n = nums.length;
+        for (int[] g : groups) {
+            p2 = 0;
+            while (p2 < g.length && p1 < n) {
+                if (nums[p1++] == g[p2]) {
+                    p2++;
+                } else {
+                    // 从开始的下一个数字开始重新匹配
+                    p1 -= p2;
+                    p2 = 0;
+                }
+            }
+            if (p1 >= n && p2 != g.length) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/find-if-path-exists-in-graph/">1971. 寻找图中是否存在路径</a>
+     */
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        if (source == destination) {
+            return true;
+        }
+        // 构造并查集 fa表示父节点数组
+        int[] fa = new int[n];
+        for (int i = 0; i < n; ++i) {
+            fa[i] = i;
+        }
+        for (int[] edge : edges) {
+            union1971(fa, edge[0], edge[1]);
+        }
+        // 是否在同一集合里
+        return findRoot1971(fa, source) == findRoot1971(fa, destination);
+    }
+
+    private int findRoot1971(int[] fa, int u) {
+        while (fa[u] != u) {
+            fa[u] = fa[fa[u]];
+            u = fa[u];
+        }
+        return u;
+    }
+
+    private void union1971(int[] fa, int u, int v) {
+        int fp = findRoot1971(fa, u);
+        int fq = findRoot1971(fa, v);
+        // 连通
+        fa[fp] = fq;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/minimum-limit-of-balls-in-a-bag/">1760. 袋子里最少数目的球</a>
+     */
+    public int minimumSize(int[] nums, int maxOperations) {
+        int max = 0;
+        for (int e : nums) {
+            max = Math.max(max, e);
+        }
+        // 给定maxOperations 次操作次数，能否可以使得单个袋子里球数目的最大值不超过y
+        int l = 1;
+        int pos = max;
+        while (l <= max) {
+            int mid = l + ((max - l) >> 1);
+            int cnt = 0;
+            for (int e : nums) {
+                // 将第i个桶装有mid个球的操作次数
+                cnt += (e - 1) / mid;
+            }
+            if (cnt <= maxOperations) {
+                max = mid - 1;
+                pos = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return pos;
+    }
+
+    /**
+     * <a href="https://leetcode.cn/problems/maximum-score-from-removing-stones/">1753. 移除石子的最大得分</a>
+     */
+    public int maximumScore(int a, int b, int c) {
+        if (a + b < c) {
+            return a + b;
+        }
+        if (a + c < b) {
+            return a + c;
+        }
+        if (c + b < a) {
+            return b + c;
+        }
+        return (a + b + c) / 2;
+    }
+
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/final-value-of-variable-after-performing-operations/">2011. 执行操作后的变量值</a>
+     */
+    public int finalValueAfterOperations(String[] operations) {
+        int result = 0;
+        //不论是X++ ++X --X X-- 都只需要看中间一位
+        for (String operation : operations) {
+            if ('+' == operation.charAt(1)) {
+                ++result;
+            } else {
+                --result;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/largest-merge-of-two-strings/">1754. 构造字典序最大的合并字符串</a>
+     */
+    public String largestMerge(String word1, String word2) {
+        int idx1 = 0;
+        int idx2 = 0;
+        StringBuilder sb = new StringBuilder();
+        String temp1 = "";
+        String temp2 = "";
+        while (idx1 < word1.length() && idx2 < word2.length()) {
+            temp1 = word1.substring(idx1);
+            temp2 = word2.substring(idx2);
+            if (temp1.compareTo(temp2) > 0) {
+                sb.append(word1.charAt(idx1));
+                idx1++;
+            } else {
+                sb.append(word2.charAt(idx2));
+                idx2++;
+            }
+        }
+        while (idx1 < word1.length()) {
+            sb.append(word1.charAt(idx1));
+            idx1++;
+        }
+        while (idx2 < word2.length()) {
+            sb.append(word2.charAt(idx2));
+            idx2++;
+        }
+        return sb.toString();
+    }
+
+    //todo 1687， 1691, 1697, 1703, 1799
 
     public static void main(String[] args) {
         Solution s = new Solution();
