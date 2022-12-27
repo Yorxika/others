@@ -1450,11 +1450,48 @@ public class Solution {
         return sb.toString();
     }
 
-    //todo 1687， 1691, 1697, 1703, 1799
+    /**
+     * @see <a href="https://leetcode.cn/problems/count-number-of-homogenous-substrings/submissions/">1759. 统计同构子字符串的数目</a>
+     */
+    public int countHomogenous(String s) {
+        int n = s.length();
+        long res = 1;
+        int temp = s.charAt(0);
+        int count = 1;
+        for (int i = 1; i < n; i++) {
+            if (s.charAt(i) == temp) {
+                count++;
+                res = res + count;
+            } else {
+                temp = s.charAt(i);
+                res = res + 1;
+                count = 1;
+            }
+        }
+        return (int) (res % 1000000007);
+    }
+
+    /**
+     * @see <a href="https://leetcode.cn/problems/minimum-moves-to-convert-string/submissions/">2027. 转换字符串的最少操作次数</a>
+     */
+    public int minimumMoves(String s) {
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch - 'X' == 0) {
+                res++;
+                i = Math.min(i + 2, s.length());
+            }
+        }
+        return res;
+    }
+
+    //todo 1687， 1691, 1697, 1703, 1799， 1739
 
     public static void main(String[] args) {
         Solution s = new Solution();
         s.minOperations("0100");
+        s.minimumMoves("OXOOX");
     }
 
 }
